@@ -36,12 +36,13 @@ csstidy::csstidy()
 	settings["lowercase_s"] = 0;
 	settings["optimise_shorthands"] = 1;
 	settings["optimise_numbers"] = 0;
+	settings["optimise_important"] = 0;
 	settings["remove_last_semicolon"] = 0;
 	settings["case_properties"] = 0;
 	settings["sort_properties"] = 0;
 	settings["sort_selectors"] = 0;
 	settings["merge_selectors"] = 2;
-	settings["discard_invalid_properties"] = 0;
+	settings["discard_invalid_properties"] = 1;
 	settings["allow_html_in_templates"] = 0;
 	settings["silent"] = 0;
 	settings["preserve_css"] = 0;

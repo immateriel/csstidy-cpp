@@ -192,16 +192,19 @@ void csstidy::print_css(string filename)
 	string output_string = trim(output.str());
 
 	if(!settings["silent"]) {
-		cerr << endl << "Selectors: " << selectors << " | Properties: " << properties << endl;
+		cerr << "CSSTidy: " << CSSTIDY_VERSION << " by Florian Schmitz 2005, 2006, immatériel.fr 2017" << endl;
+		cerr << "Selectors: " << selectors << endl;
+		cerr << "Properties: " << properties << endl;
 		float ratio = round(((input_size - (float) output_string.length())/input_size)*100,2);
 		float i_b = round(((float) input_size)/1024,3);
 		float o_b = round(((float) output_string.length())/1024,3);
-		cerr << "Input size: " << i_b << "KiB  Output size: " << o_b << "KiB  Compression ratio: " << ratio << "%" << endl;
+		cerr << "Input size: " << i_b << "KiB" << endl;
+		cerr << "Output size: " << o_b << "KiB" << endl;
+		cerr << "Compression ratio: " << ratio << "%" << endl;
 	}
 
 	if(filename == "")
 	{
-		if(!settings["silent"]) cerr << "-----------------------------------\n\n";
 		cout << output_string << "\n";
 	}
 	else
@@ -211,18 +214,14 @@ void csstidy::print_css(string filename)
 
 	if(logs.size() > 0 && !settings["silent"])
 	{
-		cerr << "-----------------------------------\n\n";
 		for(map<int, vector<message> >::iterator j = logs.begin(); j != logs.end(); j++ )
 		{
 			for(int i = 0; i < j->second.size(); ++i)
 			{
-				cerr << j->first << ": " << j->second[i].m << "\n" ;
+				cerr << "Log(" << j->first << "): " << j->second[i].m << "\n" ;
 			}
 		}
 	}
 
-	if(!settings["silent"]) {
-		cerr << "\n-----------------------------------" << endl << "CSSTidy " << CSSTIDY_VERSION << " by Florian Schmitz 2005, 2006" << endl;
-	}
 	file_output.close();
 }

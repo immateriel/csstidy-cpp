@@ -313,22 +313,26 @@ void csstidy::parse_css(string css_input)
 					cur_value = implode(" ",cur_sub_value_arr);
 
 					// Compress !important
-					temp = c_important(cur_value);
-					if(temp != cur_value)
-					{
-						log("Optimised !important",Information);
-					}
-					cur_value = temp;
-
-					// Optimise shorthand properties
-					if(shorthands.count(cur_property) > 0)
-					{
-						temp = shorthand(cur_value);
-						if(temp != cur_value)
+					if (settings["optimise_important"]) {
+						temp = c_important(cur_value);
+						if (temp != cur_value)
 						{
-							log("Optimised shorthand notation (" + cur_property + "): Changed \"" + cur_value + "\" to \"" + temp + "\"",Information);
+							log("Optimised !important", Information);
 						}
 						cur_value = temp;
+					}
+
+					// Optimise shorthand properties
+					if (settings["optimise_shorthands"]) {
+						if (shorthands.count(cur_property) > 0)
+						{
+							temp = shorthand(cur_value);
+							if (temp != cur_value)
+							{
+								log("Optimised shorthand notation (" + cur_property + "): Changed \"" + cur_value + "\" to \"" + temp + "\"", Information);
+							}
+							cur_value = temp;
+						}
 					}
 
 					// Compress font-weight (tiny compression)
@@ -438,7 +442,7 @@ void csstidy::parse_css(string css_input)
 			if(css_input[i] == str_char && !escaped(css_input,i) && str_in_str == false)
 			{
 				status = from;
-				if (cur_string.find_first_of(" \n\t\r\0xb") == string::npos && cur_property != "content") {
+				if (cur_string.find_first_of(" \n\t\r\0xb") == string::npos && cur_property != "content"  && cur_sub_value != "format") {
 					if (str_char == '"' || str_char == '\'') {
 						cur_string = cur_string.substr(1, cur_string.length() - 2);
 					} else if (cur_string.length() > 3 && (cur_string[1] == '"' || cur_string[1] == '\'')) /* () */ {

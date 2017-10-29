@@ -17,7 +17,7 @@
  *   along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
  
-#define CSSTIDY_VERSION "1.3"
+#define CSSTIDY_VERSION "1.4"
 #include <cstdlib>
 #include <cstring> 
 #include <string> 
