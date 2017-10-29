@@ -1,0 +1,16 @@
+Custom CSSTidy (http://csstidy.sourceforge.net/) C++ fork with additions from https://github.com/dmitryleskov/csstidy-cpp and https://github.com/csstidy-c/csstidy
+
+---
+
+CSSTidy is an opensource CSS parser and optimiser. It is available as
+executable file (available for Windows, Linux and OSX) which can be
+controlled per command line and as PHP script (both with almost the same
+functionality).
+
+In opposite to most other CSS parsers, no regular expressions are used and
+thus CSSTidy has full CSS2 support and a higher reliability.
+
+
+See the file INSTALL for building and installation instructions.
+
+CSSTidy is free software.  See the file COPYING for copying conditions.
