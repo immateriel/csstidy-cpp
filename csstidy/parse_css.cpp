@@ -48,6 +48,7 @@ void csstidy::parse_css(string css_input)
 	bool str_in_str = false;
 	bool invalid_at = false;
 	bool pn = false;
+	bool bracket = false;
 
 	int str_size = css_input.length();
 	for(int i = 0; i < str_size; ++i)
@@ -81,7 +82,7 @@ void csstidy::parse_css(string css_input)
 				{
 					cur_at += unicode(css_input,i);
 				}
-				else /*if((css_input[i] == '(') || (css_input[i] == ':') || (css_input[i] == ')') || (css_input[i] == '.'))*/
+				else
 				{
 					cur_at += css_input[i];  /* append tokens after media selector */
 				}			
@@ -134,7 +135,7 @@ void csstidy::parse_css(string css_input)
 						log("Invalid @-rule: " + invalid_at_name + " (removed)",Warning);
 					}
 				}
-				else if(css_input[i] == '"' || css_input[i] == '\'')
+				else if(!bracket && (css_input[i] == '"' || css_input[i] == '\''))
 				{
 					cur_string = css_input[i];
 					status = instr;
@@ -167,6 +168,14 @@ void csstidy::parse_css(string css_input)
 				else if(css_input[i] == '\\')
 				{
 					cur_selector += unicode(css_input,i);
+				}
+				else if(css_input[i] == '[') {
+					bracket=true;
+					cur_selector += css_input[i];
+				}
+				else if(css_input[i] == ']') {
+					bracket=false;
+					cur_selector += css_input[i];					
 				}
 				// remove unnecessary universal selector,  FS#147
 				else if(!(css_input[i] == '*' && (s_at(css_input,i+1) == '.' || s_at(css_input,i+1) == '[' || s_at(css_input,i+1) == ':' || s_at(css_input,i+1) == '#')))

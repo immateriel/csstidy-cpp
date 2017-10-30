@@ -830,6 +830,7 @@ void prepare()
 	// others
 	all_properties["text-rendering"] = "CSS3.0";
 	all_properties["-epub-line-break"] = "CSS3.0";
+	all_properties["-epub-ruby-position"] = "CSS3.0";
 
 	background_prop_default["background-image"] = "none";
 	background_prop_default["background-size"] = "auto";
