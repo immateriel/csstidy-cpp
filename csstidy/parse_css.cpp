@@ -350,31 +350,37 @@ void csstidy::parse_css(string css_input)
 					}
 
 					bool valid = (all_properties.count(cur_property) > 0 && all_properties[cur_property].find(css_level,0) != string::npos);
-					if((!invalid_at || settings["preserve_css"]) && (!settings["discard_invalid_properties"] || valid))
+					if ((!invalid_at || settings["preserve_css"]) && (!settings["discard_invalid_properties"] || valid))
 					{
-						add(cur_at,cur_selector,cur_property,cur_value);
-						add_token(VALUE, cur_value);
+						if (cur_value == "") {
+							log("Delete property with empty value: " + cur_property, Warning);
 
-						// Further Optimisation
-						if(cur_property == "background" && settings["optimise_shorthands"] > 1)
-						{
-							map<string,string> temp = dissolve_short_bg(cur_value);
-							css[cur_at][cur_selector].erase("background");
-							for(map<string,string>::iterator it = temp.begin(); it != temp.end(); ++it )
+						} else {
+
+							add(cur_at, cur_selector, cur_property, cur_value);
+							add_token(VALUE, cur_value);
+
+							// Further Optimisation
+							if (cur_property == "background" && settings["optimise_shorthands"] > 1)
 							{
-								add(cur_at,cur_selector,it->first,it->second);
+								map<string, string> temp = dissolve_short_bg(cur_value);
+								css[cur_at][cur_selector].erase("background");
+								for (map<string, string>::iterator it = temp.begin(); it != temp.end(); ++it )
+								{
+									add(cur_at, cur_selector, it->first, it->second);
+								}
 							}
-						}
-						if(shorthands.count(cur_property) > 0 && settings["optimise_shorthands"] > 0)
-						{
-							map<string,string> temp = dissolve_4value_shorthands(cur_property,cur_value);
-							for(map<string,string>::iterator it = temp.begin(); it != temp.end(); ++it )
+							if (shorthands.count(cur_property) > 0 && settings["optimise_shorthands"] > 0)
 							{
-								add(cur_at,cur_selector,it->first,it->second);
-							}
-							if(shorthands[cur_property][0] != "0")
-							{
-								css[cur_at][cur_selector].erase(cur_property);
+								map<string, string> temp = dissolve_4value_shorthands(cur_property, cur_value);
+								for (map<string, string>::iterator it = temp.begin(); it != temp.end(); ++it )
+								{
+									add(cur_at, cur_selector, it->first, it->second);
+								}
+								if (shorthands[cur_property][0] != "0")
+								{
+									css[cur_at][cur_selector].erase(cur_property);
+								}
 							}
 						}
 					}

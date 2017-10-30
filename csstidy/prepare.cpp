@@ -824,6 +824,13 @@ void prepare()
 	all_properties["-moz-window-dragging"] = "CSS3.0";
 	all_properties["-moz-window-shadow"] = "CSS3.0";
 
+	// adobe
+	all_properties["adobe-hyphenate"] = "CSS3.0";
+
+	// others
+	all_properties["text-rendering"] = "CSS3.0";
+	all_properties["-epub-line-break"] = "CSS3.0";
+
 	background_prop_default["background-image"] = "none";
 	background_prop_default["background-size"] = "auto";
 	background_prop_default["background-repeat"] = "repeat";
