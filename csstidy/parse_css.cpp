@@ -134,6 +134,12 @@ void csstidy::parse_css(string css_input)
 						}
 						log("Invalid @-rule: " + invalid_at_name + " (removed)",Warning);
 					}
+
+					if (!cur_selector.compare(0, 10, "@font-face")) {
+						pstore *ff = new pstore();
+						font_faces.push_back(ff);
+					}
+
 				}
 				else if(!bracket && (css_input[i] == '"' || css_input[i] == '\''))
 				{
@@ -361,6 +367,11 @@ void csstidy::parse_css(string css_input)
 					bool valid = (all_properties.count(cur_property) > 0 && all_properties[cur_property].find(css_level,0) != string::npos);
 					if ((!invalid_at || settings["preserve_css"]) && (!settings["discard_invalid_properties"] || valid))
 					{
+						if(!cur_selector.compare(0,10,"@font-face")) {
+							pstore *ff = font_faces.back();
+							(*ff)[cur_property]=cur_value;
+
+						} else {
 						if (cur_value == "") {
 							log("Delete property with empty value: " + cur_property, Warning);
 
@@ -392,6 +403,7 @@ void csstidy::parse_css(string css_input)
 								}
 							}
 						}
+					}
 					}
 					if(!valid)
 					{

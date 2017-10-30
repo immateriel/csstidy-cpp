@@ -33,6 +33,16 @@ void csstidy::_convert_raw_css()
 {
 	csstokens = vector<token>();
 
+    for(int n=0;n<font_faces.size();n++) {
+            add_token(SEL_START, "@font-face", true);
+    		for(umap<string,string>::iterator k = font_faces.at(n)->begin(); k != font_faces.at(n)->end(); ++k)
+            {
+                add_token(PROPERTY, k->first, true);
+                add_token(VALUE, k->second, true);
+            }
+            add_token(SEL_END, "@font-face", true);
+    }
+
     for (css_struct::iterator i = css.begin(); i != css.end(); ++i)
     {
         if (settings["sort_selectors"]) i->second.sort();
@@ -58,6 +68,7 @@ void csstidy::_convert_raw_css()
             add_token(AT_END, i->first, true);
         }
     }
+
 }
 
 int csstidy::_seeknocomment(const int key, int move)
