@@ -79,7 +79,7 @@ void csstidy::print_css(string filename)
 {
 	if(css.empty() && charset == "" && namesp == "" && import.empty() && csstokens.empty())
 	{
-		if(!settings["silent"]) cout << "Warning: empty CSS output!" << endl;
+		if(!settings["silent"]) cerr << "Log(1): empty CSS output!" << endl;
 	}
 
 	ofstream file_output;
@@ -88,7 +88,7 @@ void csstidy::print_css(string filename)
 		file_output.open(filename.c_str(),ios::binary);
 		if(file_output.bad())
 		{
-			if(!settings["silent"]) cout << "Error when trying to save the output file!" << endl;
+			if(!settings["silent"]) cerr << "Log(1): Error when trying to save the output file!" << endl;
 			return;
 		}
 	}
