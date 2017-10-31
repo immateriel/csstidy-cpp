@@ -64,6 +64,14 @@ csstidy::csstidy()
 	csstemplate.push_back("\n"); // after last line @-rule
 } 
 	
+csstidy::~csstidy() {
+	for(int i=0;i<font_faces.size();i++) {
+		pstore *ff = font_faces.at(i);
+		delete ff;
+	}
+	font_faces.clear();
+}
+
 void csstidy::add_token(const token_type ttype, const string data, const bool force)
 {
 	if(settings["preserve_css"] || force) {

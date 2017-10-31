@@ -56,6 +56,7 @@ class csstidy
 						
 	public:
 	    csstidy();
+	    ~csstidy();
 	    	
 		// Adds a property-value pair to an existing CSS structure
 		void add(const string& media, const string& selector, const string& property, const string& value);

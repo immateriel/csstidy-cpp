@@ -364,46 +364,43 @@ void csstidy::parse_css(string css_input)
 						}
 					}
 
-					bool valid = (all_properties.count(cur_property) > 0 && all_properties[cur_property].find(css_level,0) != string::npos);
+					bool valid = (all_properties.count(cur_property) > 0 && all_properties[cur_property].find(css_level, 0) != string::npos);
 					if ((!invalid_at || settings["preserve_css"]) && (!settings["discard_invalid_properties"] || valid))
 					{
-						if(!cur_selector.compare(0,10,"@font-face")) {
+						if (!cur_selector.compare(0, 10, "@font-face")) {
 							pstore *ff = font_faces.back();
-							(*ff)[cur_property]=cur_value;
-
+							(*ff)[cur_property] = cur_value;
 						} else {
-						if (cur_value == "") {
-							log("Delete property with empty value: " + cur_property, Warning);
+							if (cur_value == "") {
+								log("Delete property with empty value: " + cur_property, Warning);
+							} else {
+								add(cur_at, cur_selector, cur_property, cur_value);
+								add_token(VALUE, cur_value);
 
-						} else {
-
-							add(cur_at, cur_selector, cur_property, cur_value);
-							add_token(VALUE, cur_value);
-
-							// Further Optimisation
-							if (cur_property == "background" && settings["optimise_shorthands"] > 1)
-							{
-								map<string, string> temp = dissolve_short_bg(cur_value);
-								css[cur_at][cur_selector].erase("background");
-								for (map<string, string>::iterator it = temp.begin(); it != temp.end(); ++it )
+								// Further Optimisation
+								if (cur_property == "background" && settings["optimise_shorthands"] > 1)
 								{
-									add(cur_at, cur_selector, it->first, it->second);
+									map<string, string> temp = dissolve_short_bg(cur_value);
+									css[cur_at][cur_selector].erase("background");
+									for (map<string, string>::iterator it = temp.begin(); it != temp.end(); ++it )
+									{
+										add(cur_at, cur_selector, it->first, it->second);
+									}
 								}
-							}
-							if (shorthands.count(cur_property) > 0 && settings["optimise_shorthands"] > 0)
-							{
-								map<string, string> temp = dissolve_4value_shorthands(cur_property, cur_value);
-								for (map<string, string>::iterator it = temp.begin(); it != temp.end(); ++it )
+								if (shorthands.count(cur_property) > 0 && settings["optimise_shorthands"] > 0)
 								{
-									add(cur_at, cur_selector, it->first, it->second);
-								}
-								if (shorthands[cur_property][0] != "0")
-								{
-									css[cur_at][cur_selector].erase(cur_property);
+									map<string, string> temp = dissolve_4value_shorthands(cur_property, cur_value);
+									for (map<string, string>::iterator it = temp.begin(); it != temp.end(); ++it )
+									{
+										add(cur_at, cur_selector, it->first, it->second);
+									}
+									if (shorthands[cur_property][0] != "0")
+									{
+										css[cur_at][cur_selector].erase(cur_property);
+									}
 								}
 							}
 						}
-					}
 					}
 					if(!valid)
 					{
@@ -469,7 +466,7 @@ void csstidy::parse_css(string css_input)
 			if(css_input[i] == str_char && !escaped(css_input,i) && str_in_str == false)
 			{
 				status = from;
-				if (cur_string.find_first_of(" \n\t\r\0xb") == string::npos && cur_property != "content"  && cur_sub_value != "format") {
+				if (cur_string.find_first_of(" \n\t\r\0xb") == string::npos && cur_property != "content"  && cur_sub_value != "format" && cur_sub_value != "url") {
 					if (str_char == '"' || str_char == '\'') {
 						cur_string = cur_string.substr(1, cur_string.length() - 2);
 					} else if (cur_string.length() > 3 && (cur_string[1] == '"' || cur_string[1] == '\'')) /* () */ {
