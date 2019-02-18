@@ -156,6 +156,7 @@ void csstidy::parse_css(string css_input)
 				else if(css_input[i] == '{')
 				{
 					status = ip;
+					cur_selector = rtrim(cur_selector,","); // delete empty selector
 					add_token(SEL_START, cur_selector);
 					++selectors;
 				}
